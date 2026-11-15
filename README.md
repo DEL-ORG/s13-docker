@@ -25,7 +25,9 @@ The application uses only the Node.js standard library and has no package depend
 ## Run
 
 ```bash
-docker compose up --build -d
+docker build -t s13-training-camps:latest .
+docker volume create s13-training-camps-data
+docker run -d --name s13-training-camps --restart unless-stopped -p 8080:8080 -v s13-training-camps-data:/data s13-training-camps:latest
 ```
 
 Open <http://localhost:8080>.
@@ -33,7 +35,7 @@ Open <http://localhost:8080>.
 ## Verify
 
 ```bash
-docker compose ps
+docker ps --filter name=s13-training-camps
 curl http://localhost:8080/health
 curl http://localhost:8080/api/courses
 ```
@@ -41,11 +43,11 @@ curl http://localhost:8080/api/courses
 ## Stop
 
 ```bash
-docker compose down
+docker rm -f s13-training-camps
 ```
 
-Use `docker compose down -v` only when you intentionally want to delete saved demo users and enrollments.
+Use `docker volume rm s13-training-camps-data` only when you intentionally want to delete saved demo users and enrollments.
 
 ## CI/CD
 
-`.github/workflows/deploy-s13-training-camps.yml` builds the single image, takes the existing stack down, starts the new container with `--force-recreate`, and verifies its health. No repository variables or secrets are required for this student demo.
+`.github/workflows/deploy-s13-training-camps.yml` builds the single image from the root `Dockerfile`, removes the existing container, starts the replacement with the persistent volume, and verifies its health. No repository variables or secrets are required for this student demo.

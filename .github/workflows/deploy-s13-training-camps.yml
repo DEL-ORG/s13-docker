@@ -23,7 +23,6 @@ jobs:
         run: |
           set -euo pipefail
           docker version
-          docker compose version
 
       - name: Set image tag from commit
         run: |
@@ -33,25 +32,26 @@ jobs:
           printf 'IMAGE_TAG=%s\n' "$image_tag" >> "$GITHUB_ENV"
           echo "Building the S13 image with tag: $image_tag"
 
-      - name: Validate Compose configuration
+      - name: Build fresh image
         run: |
           set -euo pipefail
-          docker compose config --quiet
-
-      - name: Build fresh images
-        run: |
-          set -euo pipefail
-          docker compose build --pull
+          docker build --pull --tag "s13-training-camps:${IMAGE_TAG}" .
 
       - name: Take down current application
         run: |
           set -euo pipefail
-          docker compose down --remove-orphans
+          docker rm --force s13-training-camps 2>/dev/null || true
 
       - name: Start application with new images
         run: |
           set -euo pipefail
-          docker compose up --build --force-recreate --remove-orphans -d
+          docker volume create s13-training-camps-data >/dev/null
+          docker run --detach \
+            --name s13-training-camps \
+            --restart unless-stopped \
+            --publish 8080:8080 \
+            --volume s13-training-camps-data:/data \
+            "s13-training-camps:${IMAGE_TAG}"
 
       - name: Verify deployment health
         run: |
@@ -59,12 +59,12 @@ jobs:
           for attempt in $(seq 1 30); do
             if curl --fail --silent --show-error "http://127.0.0.1:8080/health" >/dev/null && \
                curl --fail --silent --show-error "http://127.0.0.1:8080/api/courses" >/dev/null; then
-              docker compose ps
+              docker ps --filter name=s13-training-camps
               echo "The S13 Training Camps container is healthy with image tag ${IMAGE_TAG}."
               exit 0
             fi
             sleep 5
           done
-          docker compose ps
-          docker compose logs --tail=100
+          docker ps --all --filter name=s13-training-camps
+          docker logs --tail=100 s13-training-camps || true
           exit 1
