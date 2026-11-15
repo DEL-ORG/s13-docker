@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Practical technology training through focused, mentor-led camps.">
+  <title>S13 Training Camps — Learn by building</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="S13 Training Camps home"><span>S13</span> Training Camps</a>
+    <button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav id="nav" aria-label="Main navigation">
+      <a href="#programs">Programs</a><a href="#approach">How it works</a><a href="#architecture">Architecture</a><a href="#apply">Apply</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">SPRING COHORT · APPLICATIONS OPEN</p>
+        <h1>Turn curiosity into <em>capability.</em></h1>
+        <p class="lead">Focused technology camps for people ready to build, troubleshoot, and ship real work—with mentors beside them.</p>
+        <div class="actions"><a class="button primary" href="#programs">Explore programs <span>↗</span></a><a class="button text" href="#approach">See our approach <span>↓</span></a></div>
+      </div>
+      <div class="hero-art">
+        <img src="assets/s13-students.png" alt="S13 students collaborating around a laptop">
+        <div class="badge">13<br><small>BUILD DAYS</small></div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Skills taught"><span>LINUX</span><b>✦</b><span>CLOUD</span><b>✦</b><span>SECURITY</span><b>✦</b><span>DATA</span><b>✦</b><span>DEVOPS</span></section>
+
+    <section class="programs" id="programs">
+      <div class="section-heading"><div><p class="eyebrow">CHOOSE YOUR DIRECTION</p><h2>Programs built around doing.</h2></div><p>Small cohorts. Guided labs. A final project you can explain with confidence.</p></div>
+      <div class="filters" aria-label="Filter programs"><button class="active" data-track="all">All tracks</button><button data-track="Infrastructure">Infrastructure</button><button data-track="Delivery">Delivery</button><button data-track="Security">Security</button><button data-track="Data">Data</button></div>
+      <div class="course-grid" id="course-grid" aria-live="polite"><p class="loading">Loading programs…</p></div>
+    </section>
+
+    <section class="approach" id="approach">
+      <div><p class="eyebrow light">THE S13 METHOD</p><h2>Less watching.<br>More becoming.</h2><p>Every week follows a simple rhythm: understand the system, practice with support, then prove it by building.</p></div>
+      <ol><li><span>01</span><div><strong>Learn the why</strong><p>Short, clear instruction connects each tool to the problem it solves.</p></div></li><li><span>02</span><div><strong>Work the lab</strong><p>Build in realistic environments while mentors help you reason through blockers.</p></div></li><li><span>03</span><div><strong>Ship the proof</strong><p>Finish with a working project and a story you can take into interviews.</p></div></li></ol>
+    </section>
+
+    <section class="architecture" id="architecture"><div><p class="eyebrow">SIMPLE TO RUN</p><h2>One container. The complete experience.</h2><p>The website, authentication, course catalog, enrollment API, and persistent demo storage now run together in one lightweight Node.js container.</p></div><div class="single-container" aria-label="Single container architecture"><strong>S13 Training Camps container</strong><span>Website</span><span>Authentication</span><span>Courses</span><span>Enrollment</span><small>Persistent Docker volume</small></div></section>
+
+    <section class="apply" id="apply">
+      <div class="apply-copy"><p class="eyebrow">YOUR NEXT BUILD STARTS HERE</p><h2>Save your seat.</h2><p>Tell us where you want to grow. We’ll follow up with cohort details and a short readiness conversation.</p><div class="contact-note"><span>↳</span> No application fee.<br>Response within 2 business days.</div></div>
+      <form id="application-form">
+        <label>Full name<input name="name" autocomplete="name" required placeholder="Your name"></label>
+        <label>Email address<input type="email" name="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label>Program<select name="courseId" id="course-select" required><option value="">Choose a program</option></select></label>
+        <label>Experience level<select name="experience"><option>New to the field</option><option>Some self-study</option><option>Working professional</option></select></label>
+        <button class="button primary submit" type="submit">Send my application <span>→</span></button>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+  <footer><a class="brand" href="#top"><span>S13</span> Training Camps</a><p>Build useful skills. Make meaningful progress.</p><p>© <span id="year"></span> S13</p></footer>
+</body>
+</html>

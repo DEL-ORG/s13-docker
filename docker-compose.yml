@@ -1,0 +1,21 @@
+name: s13-training-camps
+
+services:
+  app:
+    image: s13-training-camps:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - app-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  app-data:
