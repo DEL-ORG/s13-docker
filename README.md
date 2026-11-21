@@ -12,7 +12,7 @@ The `app` container provides everything:
 - Enrollment API
 - File-based demo persistence through the `app-data` Docker volume
 
-The application uses only the Node.js standard library and has no package dependencies. The GitHub Actions workflow builds the Docker image on every push to a branch using GitHub's hosted `ubuntu-latest` runner and tags it with the full commit SHA. It does not push the image to a registry or deploy it.
+The application uses only the Node.js standard library and has no package dependencies. The GitHub Actions workflow builds the Docker image on every push to a branch using GitHub's hosted `ubuntu-latest` runner and tags it with the full commit SHA. It prints the image tag, ID, and size in the run log, but does not push the image to a registry or deploy it.
 
 ## Tools used
 

@@ -15,3 +15,6 @@ jobs:
 
       - name: Build image
         run: docker build --pull --tag "s13-training-camps:${GITHUB_SHA}" .
+
+      - name: Show built image
+        run: docker image ls --no-trunc --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.Size}}' "s13-training-camps:${GITHUB_SHA}"
