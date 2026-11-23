@@ -10,6 +10,7 @@ jobs:
   build:
     name: Build and push S13 image
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     env:
