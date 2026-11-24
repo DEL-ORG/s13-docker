@@ -4,15 +4,17 @@ on:
   push:
     branches:
       - "**"
+  workflow_dispatch:
 
 jobs:
   build:
     name: Build and push S13 image
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     env:
-      IMAGE_NAME: devopseasylearning/s13-training-camps
+      IMAGE_NAME: devopseasylearning/automation
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -25,6 +27,28 @@ jobs:
 
       - name: Build image
         run: docker build --pull --tag "${IMAGE_NAME}:${GITHUB_SHA}" --tag "${IMAGE_NAME}:latest" .
+
+      - name: Show built image details
+        run: |
+          docker image inspect "${IMAGE_NAME}:${GITHUB_SHA}" --format '
+          ## Built Docker image
+          - Repository: {{json .RepoTags}}
+          - Image ID: {{.Id}}
+          - Size: {{.Size}} bytes
+          - Architecture: {{.Architecture}}
+          - Operating system: {{.Os}}
+          - Dockerfile exposed ports: {{json .Config.ExposedPorts}}
+          '
+          docker image ls --no-trunc --format 'table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.Size}}' "${IMAGE_NAME}:${GITHUB_SHA}"
+          {
+            echo '## Built Docker image'
+            echo "- Image: \`${IMAGE_NAME}:${GITHUB_SHA}\`"
+            echo "- Latest: \`${IMAGE_NAME}:latest\`"
+            docker image inspect "${IMAGE_NAME}:${GITHUB_SHA}" --format '- Image ID: `{{.Id}}`
+          - Size: `{{.Size}} bytes`
+          - Architecture: `{{.Architecture}}`
+          - Operating system: `{{.Os}}`'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Push image to Docker Hub
         run: |
